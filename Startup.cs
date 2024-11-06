@@ -1,4 +1,5 @@
 using libreria_XGVC.Data;
+using libreria_XGVC.Data.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -34,6 +35,8 @@ namespace libreria_XGVC
             services.AddControllers();
             //Configurar DBcontext con SQL
             services.AddDbContext<AppDbContext>(options => options.UseSqlServer(ConnectionString));
+            //Configurar el servicio para que pueda ser usado
+            services.AddTransient<BookService>();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "libreria_XGVC", Version = "v1" });
@@ -60,6 +63,7 @@ namespace libreria_XGVC
             {
                 endpoints.MapControllers();
             });
+            AppInitializer.Seed(app);
         }
     }
 }
