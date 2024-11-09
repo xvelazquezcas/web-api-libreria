@@ -15,6 +15,19 @@ namespace libreria_XGVC.Controllers
         {
             _bookService = bookService;
         }
+        [HttpGet("get-all-books")]
+        public IActionResult GetAllBooks()
+        {
+            var allbooks = _bookService.GetAllBks();
+            return Ok(allbooks);
+        }
+
+        [HttpGet("get-book-by-id/{id}")] 
+        public IActionResult GetBookById(int id)
+        {
+            var book = _bookService.GetBookId(id);
+            return Ok(book);
+        }
 
         [HttpPost("add-book")]
         public IActionResult AddBook([FromBody]BookVM book)
@@ -22,5 +35,20 @@ namespace libreria_XGVC.Controllers
             _bookService.AddBook(book);
             return Ok();
         }
+
+        [HttpPut("update-book-by-id/{id}")]
+        public IActionResult UpdateBookId(int id, [FromBody]BookVM book)
+        {
+            var updateBook = _bookService.UpdateBookByID(id, book);
+            return Ok(updateBook);
+        }
+
+        [HttpDelete("delete-book-by-id/{id}")] 
+        public IActionResult DeleteBookById(int id)
+        {
+            _bookService.DeleteBookById(id);
+            return Ok();
+        }
+        
     }
 }
