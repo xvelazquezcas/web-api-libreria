@@ -15,7 +15,7 @@ namespace libreria_XGVC.Data.Services
             _context = context;
         }
         //Metodo  que nos permite agregar un nuevo libro en la BD
-        public void AddBook(BookVM book)
+        public void AddBookWithAuthors(BookVM book)
         {
             var _book = new Book()
             {
@@ -25,12 +25,22 @@ namespace libreria_XGVC.Data.Services
                 DataRead = book.DataRead,
                 Rate = book.Rate,
                 Genero = book.Genero,
-                Autor = book.Autor,
                 CoverUrl = book.CoverUrl,
-                DateAdded = DateTime.Now
+                DateAdded = DateTime.Now,
+                PublisherId = book.PublisherID
             };
             _context.Books.Add(_book);
             _context.SaveChanges();
+            foreach (var id in book.AutorIDs)
+            {
+                var _book_author = new Book_Author()
+                {
+                    BookId = _book.id,
+                    AuthorId = id
+                };
+                _context.Book_Authors.Add(_book_author);
+                _context.SaveChanges();
+            }
         }
         //Metodo  que nos permite obtener una lista de todos los libros de la BD
         public List<Book> GetAllBks() => _context.Books.ToList();
@@ -49,7 +59,6 @@ namespace libreria_XGVC.Data.Services
                 _book.DataRead = book.DataRead;
                 _book.Rate = book.Rate;
                 _book.Genero = book.Genero;
-                _book.Autor = book.Autor;
                 _book.CoverUrl = book.CoverUrl;
 
                 _context.SaveChanges();
