@@ -35,8 +35,12 @@ namespace libreria_XGVC
             services.AddControllers();
             //Configurar DBcontext con SQL
             services.AddDbContext<AppDbContext>(options => options.UseSqlServer(ConnectionString));
+
             //Configurar el servicio para que pueda ser usado
             services.AddTransient<BookService>();
+            services.AddTransient<AuthorsService>();
+            services.AddTransient<PublishersService>();
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "libreria_XGVC", Version = "v1" });
@@ -63,7 +67,7 @@ namespace libreria_XGVC
             {
                 endpoints.MapControllers();
             });
-            AppInitializer.Seed(app);
+           //AppInitializer.Seed(app);
         }
     }
 }
