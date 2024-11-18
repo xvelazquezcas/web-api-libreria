@@ -20,5 +20,12 @@ namespace libreria_XGVC.Controllers
             _authorsServices.AddAuthor(author);
             return Ok();
         }
+        [HttpGet("get-author-whit-books-by-id/{id}")]
+        public IActionResult GetAuthorWhithBooks(int id)
+        {
+             var response = _authorsServices.GetAuthorWithBook(id); 
+            return Ok(response);
+
+        }
     }
 }
