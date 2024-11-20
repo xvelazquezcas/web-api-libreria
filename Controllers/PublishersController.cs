@@ -14,12 +14,28 @@ namespace libreria_XGVC.Controllers
         {
             _PublishersService = publishersService; 
         }
+
         [HttpPost("Add-publisher")]
         public IActionResult AddPublisher([FromBody] PublisherVM publiser)
         {
-            _PublishersService.AddPublisher(publiser);
-            return Ok();
+            var newPublisher =  _PublishersService.AddPublisher(publiser);
+            return Created(nameof(AddPublisher), newPublisher);
         }
+
+        [HttpGet("get-publisher-by-id/{id}")]
+        public IActionResult GetPublisherById(int id)
+        {
+            var _response = _PublishersService.GetPublisherByID(id);
+            if (_response != null)
+            {
+                return Ok(_response);
+            }
+            else
+            {
+                return NotFound();
+            }
+        }
+
         [HttpGet("get-publisher-books-with-authors/{id}")]
         public IActionResult GetPublisherData(int id)
         {

@@ -15,7 +15,7 @@ namespace libreria_XGVC.Data.Services
 
         //Metodo  que nos permite  agregar  una nueva Editora  en la BD
 
-        public void AddPublisher(PublisherVM publisher)
+        public Publisher AddPublisher(PublisherVM publisher)
         {
             var _publisher = new Publisher()
             {
@@ -23,7 +23,11 @@ namespace libreria_XGVC.Data.Services
             };
             _context.Publishers.Add(_publisher); 
             _context.SaveChanges();
+
+            return _publisher;
         }
+
+        public Publisher GetPublisherByID(int id) => _context.Publishers.FirstOrDefault(n => n.Id == id);
 
         public PublisherWithBooksAndAuthorsVM GetPublisherData(int publisherId)
         {
