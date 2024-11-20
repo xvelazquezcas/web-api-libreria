@@ -1,5 +1,6 @@
 ﻿using libreria_XGVC.Data.Models;
 using libreria_XGVC.Data.ViewModels;
+using System;
 using System.Linq;
 
 namespace libreria_XGVC.Data.Services
@@ -37,6 +38,16 @@ namespace libreria_XGVC.Data.Services
                     }).ToList() 
                 }).FirstOrDefault();
             return _publisherData;
+        }
+
+        internal void DeletePublisherId(int id)
+        {
+            var _publisher = _context.Publishers.FirstOrDefault(n => n.Id == id);
+            if(_publisher != null)
+            {
+                _context.Publishers.Remove(_publisher);
+                _context.SaveChanges();
+            }
         }
     }
 }

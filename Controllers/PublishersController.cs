@@ -26,5 +26,12 @@ namespace libreria_XGVC.Controllers
             var _response = _PublishersService.GetPublisherData(id);
             return Ok(_response);
         }
+
+        [HttpDelete("delete-publisher-by")]
+        public IActionResult DeletePublisherId(int id)
+        {
+            _PublishersService.DeletePublisherId(id);
+            return Ok();
+        }
     }
 }
