@@ -1,7 +1,9 @@
 ﻿using libreria_XGVC.Data.Models;
 using libreria_XGVC.Data.ViewModels;
+using libreria_XGVC.Exceptions;
 using System;
 using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace libreria_XGVC.Data.Services
 {
@@ -17,6 +19,8 @@ namespace libreria_XGVC.Data.Services
 
         public Publisher AddPublisher(PublisherVM publisher)
         {
+            if (StringStartsWithNumber(publisher.Name)) throw new PublisherNameException("El nombre empieza con un numero",
+                publisher.Name);
             var _publisher = new Publisher()
             {
                 Name = publisher.Name
@@ -52,6 +56,11 @@ namespace libreria_XGVC.Data.Services
                 _context.Publishers.Remove(_publisher);
                 _context.SaveChanges();
             }
+            else
+            {
+                throw new Exception($"La editora con el id: {id} no existe!");
+            }
         }
+        private bool StringStartsWithNumber(string name) => (Regex.IsMatch(name, @"^\d^"));
     }
 }

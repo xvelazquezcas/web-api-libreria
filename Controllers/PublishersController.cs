@@ -1,7 +1,9 @@
 ﻿using libreria_XGVC.Data.Services;
 using libreria_XGVC.Data.ViewModels;
+using libreria_XGVC.Exceptions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System;
 
 namespace libreria_XGVC.Controllers
 {
@@ -16,10 +18,21 @@ namespace libreria_XGVC.Controllers
         }
 
         [HttpPost("Add-publisher")]
-        public IActionResult AddPublisher([FromBody] PublisherVM publiser)
+        public IActionResult AddPublisher([FromBody] PublisherVM publisher)
         {
-            var newPublisher =  _PublishersService.AddPublisher(publiser);
-            return Created(nameof(AddPublisher), newPublisher);
+            try
+            {
+                var newPublisher = _PublishersService.AddPublisher(publisher);
+                return Created(nameof(AddPublisher), newPublisher);
+            }
+            catch(PublisherNameException ex)
+            {
+                return BadRequest($"{ex}, Nombre de la editora: {ex.PublisherName}");
+            } 
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         [HttpGet("get-publisher-by-id/{id}")]
@@ -44,10 +57,17 @@ namespace libreria_XGVC.Controllers
         }
 
         [HttpDelete("delete-publisher-by")]
-        public IActionResult DeletePublisherId(int id)
+        public IActionResult DeletePublisherId(int id) 
         {
-            _PublishersService.DeletePublisherId(id);
-            return Ok();
+            try
+            {
+                _PublishersService.DeletePublisherId(id);
+                return Ok();
+            }
+            catch(Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
     }
 }
